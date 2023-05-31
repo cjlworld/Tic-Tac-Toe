@@ -40,12 +40,16 @@ def tictactoe_action():
     json_data = request.json
     row = int(json_data["row"])
     col = int(json_data["col"])
+
+    # 验证数据的合法性
+    board = session["board"]
     if row < 0 or row > 2 or col < 0 or col > 2:
         return json.dumps({"board": board, "signal": "failure"})
-    board = session["board"]
-    if tictactoe.player(board) != tictactoe.X:
+    if tictactoe.player(board) != tictactoe.X or tictactoe.terminal(board):
         return json.dumps({"board": board, "signal": "failure"})
-    board[row][col] = tictactoe.X
+
+    # Take action
+    board = tictactoe.result(board, (row, col))
     board = tictactoe.result(board, tictactoe.minimax(board))
     session["board"] = board
     return json.dumps({"board": board, "signal": "success"})

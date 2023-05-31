@@ -80,11 +80,11 @@
           contentType: 'application/json;charset=utf-8',
           data: JSON.stringify({ row: row, col: col }),
           success: function (data) {
-            // 后端返回的数据应该是一个二维列表，更新棋盘状态并重新渲染棋盘
+            // returns {"board": board, "signal": ""}
             result = JSON.parse(data);
-            if (result.signal == 'failure') {
+            /*if (result.signal == 'failure') {
               return;
-            } 
+            } */
             board = result.board
             for (var i = 0; i < 3; i++) {
               for (var j = 0; j < 3; j++) {
