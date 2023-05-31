@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Tic Tac Toe</title>
+  <!-- 引入 Bootstrap 和 jQuery -->
+  <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.5.3/css/bootstrap.min.css">
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/popper.js/2.9.3/umd/popper.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.5.3/js/bootstrap.min.js"></script>
+  <style>
+    /* 设置背景色为黑色 */
+    body {
+      background-color: #000;
+    }
+    /* 设置每个棋格的宽度、高度和字体大小 */
+    .cell {
+      background-color: #2a2929;
+      width: 190px;
+      height: 190px;
+      font-size: 80px;
+      color: #fff;
+      text-align: center;
+      line-height: 190px;
+      border: #fff 0.3rem solid;
+      user-select: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container py-5">
+    <div class="row justify-content-center">
+      <div class="col-auto">
+        <div class="board p-2">
+          <div class="row">
+            <div class="col cell"></div>
+            <div class="col cell"></div>
+            <div class="col cell"></div>
+          </div>
+          <div class="row">
+            <div class="col cell"></div>
+            <div class="col cell"></div>
+            <div class="col cell"></div>
+          </div>
+          <div class="row">
+            <div class="col cell"></div>
+            <div class="col cell"></div>
+            <div class="col cell"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    // 在文档准备就绪时绑定事件处理程序
+    $(document).ready(function () {
+      // 初始化棋盘状态
+      var board = [
+        ['', '', ''],
+        ['', '', ''],
+        ['', '', '']
+      ];
+      // 点击棋格时触发事件
+      $('.cell').click(function () {
+        // 获取当前棋格的行列坐标
+        var row = $(this).parent().index();
+        var col = $(this).index();
+        // 如果当前棋格已经被落子，则不做任何操作
+        if (board[row][col]) {
+          return;
+        }
+        // 在当前棋格落子
+        $(this).text('X');
+        board[row][col] = 'X';
+        // 发送 POST 请求到后端处理用户落点
+        $.ajax({
+          url: '/tic-tac-toe/action',
+          type: 'POST',
+          contentType: 'application/json;charset=utf-8',
+          data: JSON.stringify({ row: row, col: col }),
+          success: function (data) {
+            // 后端返回的数据应该是一个二维列表，更新棋盘状态并重新渲染棋盘
+            result = JSON.parse(data);
+            if (result.signal == 'failure') {
+              return;
+            } 
+            board = result.board
+            for (var i = 0; i < 3; i++) {
+              for (var j = 0; j < 3; j++) {
+                $('.board .row:eq(' + i + ') .cell:eq(' + j + ')').text(board[i][j]);
+              }
+            }
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>

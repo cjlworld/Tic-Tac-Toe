@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+	<title>Tic-Tac-Toe</title>
+	<!-- 引入 bootstrap 样式表 -->
+	<link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.0.2/css/bootstrap.min.css">
+	<style>
+		body {
+			background-color: #000;
+			color: #fff;
+		}
+
+        .container {
+			margin-top: 50px;
+			margin-left: 100px;
+		}
+
+		.btn {
+			margin: 10px;
+			padding: 20px;
+			font-size: 24px;
+            width: 240px;
+            height: 120px;
+		}
+	</style>
+</head>
+<body>
+    <div class="container">
+    	<h1>Welcome to the tic-tac-toe World!</h1>
+
+        {% for mode in modes %}
+        <a href="/{{ mode.link }}" 
+            class="btn btn-dark d-flex align-items-center justify-content-center text-center" 
+            style="margin-top: 40px;">
+                {{ mode.title }}
+        </a>
+        {% endfor %}
+
+	<!-- 引入 bootstrap 脚本文件 -->
+	<script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.0.2/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
