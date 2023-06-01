@@ -49,3 +49,18 @@ Set-ExecutionPolicy -Scope CurrentUser RemoteSigned
 ```
 
 然后再次激活即可。
+
+***
+
+## 部署到外网
+
+需改为
+```python
+if __name__ == "__main__":
+    app.run(host='0.0.0.0', port=5000, debug = True)
+```
+
+见：
+- [Flask 应用-w3c](https://www.w3cschool.cn/flask/flask_application.html)
+- [flask无法访问(127.0.0.1:5000)的问题解决 - CSDN](https://blog.csdn.net/zhw864680355/article/details/88865923)
+- [Python Flask部署到服务器后外网无法访问，内网访问有效](https://blog.csdn.net/CaliXz/article/details/116276673)

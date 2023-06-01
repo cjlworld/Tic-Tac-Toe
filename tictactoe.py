@@ -163,10 +163,10 @@ def MiniMAX(board, father_value):
         optimalAction = (0, 0)
         for action in actions(board):
             child = MiniMAX(result(board, action), value)
-            if child[0] > value or (child[0] == value and random.randint(1, 3) == 1):
+            if child[0] > value:
                 value = child[0]
                 optimalAction = action
-            if value > father_value: # alpha-beta 剪枝
+            if value >= father_value: # alpha-beta 剪枝
                 return (value, optimalAction)
     # O 行动
     else: 
@@ -174,12 +174,11 @@ def MiniMAX(board, father_value):
         optimalAction = (0, 0)
         for action in actions(board):
             child = MiniMAX(result(board, action), value)
-
-            if child[0] < value or (child[0] == value and random.randint(1, 3) == 1):
+            if child[0] < value:
                 value = child[0]
                 optimalAction = action
-            # alpha-beta 剪枝
-            if value < father_value: 
+            # alpha-beta 剪枝 这里的两个符号要注意，只有一个能用 "="
+            if value <= father_value: 
                 return (value, optimalAction)
     
     return (value, optimalAction)

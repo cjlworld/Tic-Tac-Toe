@@ -45,8 +45,15 @@ def tictactoe_action():
     board = session["board"]
     if row < 0 or row > 2 or col < 0 or col > 2:
         return json.dumps({"board": board, "signal": "failure"})
-    if tictactoe.player(board) != tictactoe.X or tictactoe.terminal(board):
+    elif tictactoe.player(board) != tictactoe.X:
         return json.dumps({"board": board, "signal": "failure"})
+    # 结束了
+    elif tictactoe.terminal(board):
+        winner = tictactoe.winner(board)
+        if winner == None:
+            return json.dumps({"board": board, "signal": "Tie"})
+        else:
+            return json.dumps({"board": board, "signal": winner})
 
     # Take action
     board = tictactoe.result(board, (row, col))
@@ -55,4 +62,4 @@ def tictactoe_action():
     return json.dumps({"board": board, "signal": "success"})
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)
